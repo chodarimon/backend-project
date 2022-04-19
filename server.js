@@ -51,5 +51,5 @@ app.post('/find', (req, res) => {
 app.use(express.static(__dirname + '/public'))
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Example app listening on port http://localhost:${port}`)
 })
