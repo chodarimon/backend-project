@@ -12,6 +12,38 @@ html {
   height: 100%;
 }
 
+.nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #00b4cc;
+  position: fixed;
+  top: 0%;
+  width: 100%;
+}
+
+.nav-item {
+  float: left;
+}
+
+.nav-item a {
+  display: block;
+  color: #000;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.nav-item a:hover {
+  background-color: #9fdae2;
+}
+
+.active a{
+  color: #000;
+  background-color: #fff;
+}
+
 .center-page {
   height: 100%;
   display: flex;
