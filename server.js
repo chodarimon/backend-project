@@ -1,21 +1,24 @@
 const express = require("express");
 const axios = require("axios");
+const ejs = require("ejs");
 
 const app = express();
 const port = 3000;
+const viewDir = __dirname + "/views";
 
-app.use(express.urlencoded());
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.render(viewDir + "/main.ejs");
 });
 
 app.get("/about", (req, res) => {
-  res.sendFile(__dirname + "/about.html");
+  res.render(viewDir + "/about.ejs");
 });
 
-app.post("/find", (req, res) => {
+app.post("/result", (req, res) => {
   const options = {
     method: "GET",
     url: "https://celebrity-by-api-ninjas.p.rapidapi.com/v1/celebrity",
@@ -29,43 +32,59 @@ app.post("/find", (req, res) => {
   axios
     .request(options)
     .then(function (response) {
-      console.log(response.data[0].name);
-      console.log(response.data[0].gender);
-      console.log(response.data[0].occupation);
-      for (let i = 0; i < response.data[0].occupation.length; i++) {
-        if (response.data[0].occupation[i] == "actor") {
+      const name = response.data[0].name;
+      const age = response.data[0].age;
+      const birthdy = response.data[0].birthdy;
+      const gender = response.data[0].gender;
+      const occupation = response.data[0].occupation;
+
+      res.render(viewDir + "/result.ejs", {
+        name: name,
+        age: age,
+        birthdy: birthdy,
+        gender: gender,
+        occupation: occupation,
+      });
+
+      console.log(name);
+      console.log(gender);
+      console.log(occupation);
+      for (let i = 0; i < occupation.length; i++) {
+        if (occupation[i] == "actor") {
           console.log("It is an actor!");
         }
       }
 
       let roles = [];
-      response.data[0].occupation.map((item) => {
+      occupation.map((item) => {
         roles.push(item);
       });
 
       let Info = [
-        `${response.data[0].name}, ${
-          (response.data[0].gender, response.data[0].occupation)
-        }`,
+        `
+        ${name} | 
+        ${gender} | 
+        ${occupation}
+        `,
       ];
 
-      res.send({
-        name: response.data[0].name,
-        gender: response.data[0].gender,
-        occupation: response.data[0].occupation,
-        roles: JSON.stringify(roles),
-        Info,
-      });
+      // res.send({
+      //   name: name,
+      //   gender: gender,
+      //   occupation: occupation,
+      //   roles: JSON.stringify(roles),
+      //   Info,
+      // });
 
       // Array_After[key]
-      // response.data[0].name,
-      // response.data[0].gender,
-      // response.data[0].occupation
+      // name,
+      // gender,
+      // occupation
 
       //  JSON.parse(Array.values)
-      // response.data[0].name,
-      // response.data[0].gender,
-      // response.data[0].occupation,
+      // name,
+      // gender,
+      // occupation,
       // JSON.stringify(roles)
       // (Array_Before);
       // console.log(Actor_Info);
