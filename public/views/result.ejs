@@ -18,13 +18,12 @@
         <img src="https://keemaesthetics.co.uk/sites/default/files/styles/mt_testimonial_image/public/2016-11/testimonial-6.jpg?itok=ZntA2jRH" alt="">
       </div>
       <div class="text-container">
-        <h1><% formatName(name) %></h1>
+        <h1><%= name %></h1>
         <p><b>Age: </b><%= age %></p>
-        <p><b>Birthday: </b><% formatDate(birthdy) %> </p>
+        <p><b>Birthday: </b><%= birthdy %> </p>
         <p><b>Gender: </b><%= gender %></p>
-        <p><b>Occupations: </b><% foramatOccupation(occupation) %> </p>
+        <p><b>Occupations: </b><%= occupation %> </p>
       </div>
     </div>
-    <script src="../scripts/format.js"></script>
   </body>
 </html>

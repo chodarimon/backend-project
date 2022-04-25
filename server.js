@@ -32,11 +32,11 @@ app.post("/result", (req, res) => {
   axios
     .request(options)
     .then(function (response) {
-      const name = response.data[0].name;
+      const name = formatName(response.data[0].name);
       const age = response.data[0].age;
-      const birthdy = response.data[0].birthdy;
+      const birthdy = formatDate(response.data[0].birthdy);
       const gender = response.data[0].gender;
-      const occupation = response.data[0].occupation;
+      const occupation = formatOccupation(response.data[0].occupation);
 
       res.render(viewDir + "/result.ejs", {
         name: name,
@@ -56,3 +56,29 @@ app.use(express.static(__dirname + "/public/styles"));
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
 });
+
+const formatName = (name) => {
+  let splitted = name.split(" ");
+
+  splitted = splitted.map((el) => {
+    return el[0].toUpperCase() + el.slice(1);
+  });
+  splitted = splitted.join(" ");
+
+  return splitted;
+};
+
+const formatOccupation = (occ) => {
+  let splitted = occ.map((el) => {
+    return el.replace("_", " ");
+  });
+  splitted = splitted.join(", ");
+
+  return splitted;
+};
+
+const formatDate = (date) => {
+  let splitted = new Date(date.split("-"));
+  splitted = splitted.toDateString();
+  return splitted;
+};
