@@ -45,58 +45,10 @@ app.post("/result", (req, res) => {
         gender: gender,
         occupation: occupation,
       });
-
-      console.log(name);
-      console.log(gender);
-      console.log(occupation);
-      for (let i = 0; i < occupation.length; i++) {
-        if (occupation[i] == "actor") {
-          console.log("It is an actor!");
-        }
-      }
-
-      let roles = [];
-      occupation.map((item) => {
-        roles.push(item);
-      });
-
-      let Info = [
-        `
-        ${name} | 
-        ${gender} | 
-        ${occupation}
-        `,
-      ];
-
-      // res.send({
-      //   name: name,
-      //   gender: gender,
-      //   occupation: occupation,
-      //   roles: JSON.stringify(roles),
-      //   Info,
-      // });
-
-      // Array_After[key]
-      // name,
-      // gender,
-      // occupation
-
-      //  JSON.parse(Array.values)
-      // name,
-      // gender,
-      // occupation,
-      // JSON.stringify(roles)
-      // (Array_Before);
-      // console.log(Actor_Info);
-      //console.log(response.data[0].height);
     })
     .catch(function (error) {
       console.error(error);
     });
-
-  //console.log(req.body.dd);
-  // res.sendFile(__dirname + "/info_page.html");
-  // res.write("asv")
 });
 
 app.use(express.static(__dirname + "/public"));
