@@ -1,11 +1,11 @@
 const express = require("express");
 const axios = require("axios");
 const ejs = require("ejs");
-const format = require("./public/scripts/format");
+const format = require("./scripts/format");
 
 const app = express();
-const port = 3000;
-const viewDir = __dirname + "/public/views";
+const PORT = process.env.PORT;
+const viewDir = __dirname + "/views";
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -63,18 +63,21 @@ app.post("/result", (req, res) => {
 
 app.use(express.static(__dirname + "/public/styles"));
 
-app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`);
+// app.listen(port, () => {
+//   console.log(`Example app listening on port http://localhost:${port}`);
+// });
+
+app.listen(PORT || 3000, () => {
+  console.log(`Example app listening on port http://localhost:${PORT}`);
 });
 
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 mongoose.connect('mongodb+srv://adilkhan-back:Aitu2003@cluster0.dfuz8.mongodb.net/backend-db?retryWrites=true&w=majority');
 
-const authRouter = require('./authRouter');
+const authRouter = require('./auth-router');
 app.use("/auth", authRouter);
-app.use(bodyParser.urlencoded({ extended: true }));
-const RegRoute = require('./authRouter');
+const RegRoute = require('./auth-router');
 app.use('/', RegRoute)
 const notesSchema = {
   username: String,
