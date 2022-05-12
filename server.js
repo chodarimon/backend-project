@@ -19,6 +19,14 @@ app.get("/about", (req, res) => {
   res.render(viewDir + "/about.ejs");
 });
 
+app.get("/auth/registration", (req, res) => {
+  res.render(viewDir + "/registration.ejs");
+});
+
+app.get("/auth/login", (req, res) => {
+  res.render(viewDir + "/login.ejs");
+});
+
 app.post("/result", (req, res) => {
   const options = {
     method: "GET",
@@ -58,3 +66,17 @@ app.use(express.static(__dirname + "/public/styles"));
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
 });
+
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+mongoose.connect('mongodb+srv://adilkhan-back:Aitu2003@cluster0.dfuz8.mongodb.net/backend-db?retryWrites=true&w=majority');
+
+const authRouter = require('./authRouter');
+app.use("/auth", authRouter);
+app.use(bodyParser.urlencoded({ extended: true }));
+const RegRoute = require('./authRouter');
+app.use('/', RegRoute)
+const notesSchema = {
+  username: String,
+  password: String
+}
