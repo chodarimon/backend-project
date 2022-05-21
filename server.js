@@ -70,10 +70,6 @@ app.post('/result', (req, res) => {
 
 app.use(express.static(__dirname + '/public/styles'))
 
-// app.listen(port, () => {
-//   console.log(`Example app listening on port http://localhost:${port}`);
-// });
-
 app.listen(PORT || 3000, () => {
   console.log(`Example app listening on port http://localhost:${PORT}`)
 })
