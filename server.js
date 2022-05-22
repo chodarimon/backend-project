@@ -42,17 +42,16 @@ app.post('/result', (req, res) => {
   axios
     .request(options)
     .then(function (response) {
-      const name = response.data[0].name
+      const name = response.data[0].name.replace(/^(.)|\s+(.)/g, (c) =>
+        c.toUpperCase()
+      )
       const age = response.data[0].age
-      const birthdy = response.data[0].birthdy
+      const birthdy = format.Date(response.data[0].birthdy)
       const gender = response.data[0].gender
-      const occupation = response.data[0].occupation
+      const occupation = format.Occupation(response.data[0].occupation)
 
-      async function getWikiOutput() {
-        const wikiOutput = await wiki.fetchWikiExtract(name)
-        console.log(wikiOutput)
-      }
-      // getWikiOutput()
+      const imageUrl = wiki.fetchWikiImage(name)
+      console.log(imageUrl)
 
       res.render(viewDir + '/result.ejs', {
         name: name,
@@ -60,7 +59,7 @@ app.post('/result', (req, res) => {
         birthdy: birthdy,
         gender: gender,
         occupation: occupation,
-        format: format
+        imageUrl : imageUrl
       })
     })
     .catch(function (error) {
