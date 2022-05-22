@@ -9,7 +9,6 @@ async function fetchWikiImage(searchQuery) {
       'https://' + parsedPage
         .match(/"(\/{2}upload)(.*?)"/gm)[0]
         .replace(/("|(\/){2})/gm, '')
-    // console.log(fileName)
   })
   return fileName
 }
