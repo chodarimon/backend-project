@@ -10,6 +10,9 @@
   },
   "author": "Adilkhan, Alikhan, Kirill",
   "license": "ISC",
+  "engines": {
+    "node": "16.14.2"
+  },
   "dependencies": {
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",

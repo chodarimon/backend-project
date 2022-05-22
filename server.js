@@ -5,12 +5,26 @@ const format = require('./scripts/format')
 const wiki = require('./scripts/wiki')
 
 const app = express()
-const PORT = process.env.PORT
 const viewDir = __dirname + '/views'
+
+const mongoose = require('mongoose')
+mongoose.connect(
+  'mongodb+srv://adilkhan-back:Aitu2003@cluster0.dfuz8.mongodb.net/find-actor?retryWrites=true&w=majority'
+)
+
+const authRouter = require('./auth-router')
+app.use('/auth', authRouter)
+const RegRoute = require('./auth-router')
+app.use('/', RegRoute)
+const notesSchema = {
+  username: String,
+  password: String
+}
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(express.static(__dirname + '/public/styles'))
 
 app.get('/', (req, res) => {
   res.render(viewDir + '/main.ejs')
@@ -42,9 +56,9 @@ app.post('/result', (req, res) => {
   axios
     .request(options)
     .then(async function (response) {
-      const name = response.data[0].name
-        .replace(/^(.)|\s+(.)/g, 
-        (c) => c.toUpperCase())
+      const name = response.data[0].name.replace(/^(.)|\s+(.)/g, (c) =>
+        c.toUpperCase()
+      )
       const age = response.data[0].age
       const birthdy = format.Date(response.data[0].birthdy)
       const gender = response.data[0].gender
@@ -65,24 +79,11 @@ app.post('/result', (req, res) => {
     })
 })
 
-app.use(express.static(__dirname + '/public/styles'))
-
-app.listen(PORT || 3000, () => {
-  console.log(`Example app listening on port http://localhost:${PORT}`)
-})
-
-const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
-mongoose.connect(
-  'mongodb+srv://adilkhan-back:Aitu2003@cluster0.dfuz8.mongodb.net/backend-db?retryWrites=true&w=majority'
-)
-
-const authRouter = require('./auth-router')
-app.use('/auth', authRouter)
-const RegRoute = require('./auth-router')
-const { json } = require('express/lib/response')
-app.use('/', RegRoute)
-const notesSchema = {
-  username: String,
-  password: String
+let port = process.env.PORT
+if (port == null || port == '') {
+  port = 8000
 }
+
+app.listen(port, () => {
+  console.log(`Example app listening on port http://localhost:${port}`)
+})
