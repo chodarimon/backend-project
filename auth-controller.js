@@ -19,7 +19,7 @@ class authController {
 
       const candidate = await User.findOne({ username });
       if (candidate) {
-        return res.status(400).json({ message: "User already exists" });
+        return res.status(401).json({ message: "User already exists" });
       }
       const hashPassword = bcrypt.hashSync(password, 7);
       //const userRole = await Role.findOne({ value: "USER" })
@@ -28,7 +28,8 @@ class authController {
         password: hashPassword /*, roles: [userRole.value]*/,
       });
       await user.save();
-      return res.send(` <!doctype html>
+      
+      return res.status(201).send(` <!doctype html>
       <html lang="en">
       
       <head>
@@ -236,12 +237,12 @@ class authController {
       }
       const validPassword = bcrypt.compareSync(password, user.password);
       if (!validPassword) {
-        return res.status(400).json({ message: "Incorrect password" });
+        return res.status(401).json({ message: "Incorrect password" });
       }
       // if (password != user.password) {
       //   return res.status(400).json({ message: 'Incorrect password' });
       // }
-      return res.send(`<div>Logged as${username + " " + user._id}
+      return res.status(200).send(`<div>Logged as${username + " " + user._id}
       <!doctype html>
       <html lang="en">
       

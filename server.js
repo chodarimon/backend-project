@@ -2,6 +2,8 @@ const express = require('express')
 const axios = require('axios')
 const format = require('./scripts/format')
 const wiki = require('./scripts/wiki')
+const swaggerUi = require('swagger-ui-express')
+swaggerDocument = require('./swagger.json');
 
 const app = express()
 const viewDir = __dirname + '/views'
@@ -49,7 +51,7 @@ app.post('/result', (req, res) => {
       const occupation = format.Occupation(response.data[0].occupation)
       const imageUrl = await wiki.fetchWikiImage(name)
 
-      res.render(viewDir + '/result.ejs', {
+      res.status(200).render(viewDir + '/result.ejs', {
         name: name,
         age: age,
         birthdy: birthdy,
@@ -69,6 +71,8 @@ let port = process.env.PORT
 if (port == null || port == '') {
   port = 8000
 }
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`)
