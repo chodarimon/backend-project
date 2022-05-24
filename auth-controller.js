@@ -1,34 +1,34 @@
-const User = require('./models/User')
+const User = require("./models/User");
 //const Role = require('.public/models/Role');
-const bcrypt = require('bcryptjs')
-const { validationResult } = require('express-validator')
+const bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator");
 
 class authController {
-  async registration(req, res) {
-    try {
-      const errors = validationResult(req)
-      if (!errors.isEmpty()) {
-        return res
-          .status(400)
-          .json({ message: 'Error while registrating', errors })
-      }
-      //const { username, password } = req.body;
+    async registration(req, res) {
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res
+                    .status(400)
+                    .json({ message: "Error while registrating", errors });
+            }
+            //const { username, password } = req.body;
 
-      const username = req.body.username
-      const password = req.body.password
+            const username = req.body.username;
+            const password = req.body.password;
 
-      const candidate = await User.findOne({ username })
+      const candidate = await User.findOne({ username });
       if (candidate) {
-        return res.status(401).json({ message: 'User already exists' })
+        return res.status(401).json({ message: "User already exists" });
       }
-      const hashPassword = bcrypt.hashSync(password, 7)
+      const hashPassword = bcrypt.hashSync(password, 7);
       //const userRole = await Role.findOne({ value: "USER" })
       const user = new User({
         username,
-        password: hashPassword /*, roles: [userRole.value]*/
-      })
-      await user.save()
-
+        password: hashPassword /*, roles: [userRole.value]*/,
+      });
+      await user.save();
+      
       return res.status(201).send(` <!doctype html>
       <html lang="en">
       
@@ -129,7 +129,7 @@ class authController {
               <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
               <h1 class="" style="color:whitesmoke; font-weight:bolder; text-align:center">You have successfully registered  your account!</h3> <br>
                   <div class="col-md-12 px-0">
-                      <p style="font-size:40px; text-align:center">Welcome to this site ${username}!</p>
+                      <p style="font-size:40px; text-align:center">Welcome to this site, ${username}!</p>
                   
                       <nav class="blog-pagination" style="display:flex">
                           <a class="btn" style="margin:40px; width:20%; background-color:#00b4cc" href="/auth/login">Login</a>
@@ -141,29 +141,29 @@ class authController {
               </div>
           </div>
       </body>
-      </html>`)
-    } catch (e) {
-      console.log(e)
-      res.status(400).json({ message: 'Registration error' })
+      </html>`);
+        } catch (e) {
+            console.log(e);
+            res.status(400).json({ message: "Registration error" });
+        }
     }
-  }
   async login(req, res) {
     try {
-      const { username, password } = req.body
-      const user = await User.findOne({ username })
+      const { username, password } = req.body;
+      const user = await User.findOne({ username });
       if (!user) {
         return res
           .status(400)
-          .json({ message: `User ${username} does not exist` })
+          .json({ message: `User ${username} does not exist` });
       }
-      const validPassword = bcrypt.compareSync(password, user.password)
+      const validPassword = bcrypt.compareSync(password, user.password);
       if (!validPassword) {
-        return res.status(401).json({ message: 'Incorrect password' })
+        return res.status(401).json({ message: "Incorrect password" });
       }
       // if (password != user.password) {
       //   return res.status(400).json({ message: 'Incorrect password' });
       // }
-      return res.status(200).send(`<div>Logged as${username + ' ' + user._id}
+      return res.status(200).send(`
       <!doctype html>
       <html lang="en">
       
@@ -245,7 +245,7 @@ class authController {
               <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
               <h1 class="" style="color:whitesmoke; font-weight:bolder; text-align:center">You have successfully logged into your account!</h3> <br>
                   <div class="col-md-12 px-0">
-                      <p style="font-size:40px; text-align:center">Welcome back ${username}</p>
+                      <p style="font-size:40px; text-align:center">Welcome back, ${username}</p>
                   
                       <nav class="blog-pagination" style="display:flex">
                       <a class="btn" style="margin:40px; width:20%; background-color:#00b4cc" href="/auth/registration">Register</a>
@@ -257,20 +257,20 @@ class authController {
               </div>
           </div>
       </body>
-      </html>`)
-    } catch (e) {
-      console.log(e)
-      res.status(400).json({ message: 'Login error' })
+      </html>`);
+        } catch (e) {
+            console.log(e);
+            res.status(400).json({ message: "Login error" });
+        }
     }
-  }
-  async getUsers(req, res) {
-    try {
-      const users = await User.find()
-      res.json(users)
-    } catch (e) {
-      console.log(e)
+    async getUsers(req, res) {
+        try {
+            const users = await User.find();
+            res.json(users);
+        } catch (e) {
+            console.log(e);
+        }
     }
-  }
 }
 
-module.exports = new authController()
+module.exports = new authController();
