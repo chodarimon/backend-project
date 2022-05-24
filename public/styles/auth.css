@@ -1,3 +1,12 @@
-.navbar{
-    background-color: #00b4cc;
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.navbar {
+  background-color: #00b4cc;
+  padding: 0;
+}
+
+.nav-item {
+  padding: 14px 16px;
 }
