@@ -1,7 +1,16 @@
 const User = require("./models/User");
 //const Role = require('.public/models/Role');
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken')
 const { validationResult } = require("express-validator");
+const {secret} = require("./config");
+
+const generateAccessToken = (id) => {
+    const payload = {
+        id
+    }
+    return jwt.sign(payload, secret)
+}
 
 class authController {
     async registration(req, res) {
@@ -147,7 +156,7 @@ class authController {
             res.status(400).json({ message: "Registration error" });
         }
     }
-  async login(req, res) {
+    async login(req, res) {
     try {
       const { username, password } = req.body;
       const user = await User.findOne({ username });
@@ -160,9 +169,11 @@ class authController {
       if (!validPassword) {
         return res.status(401).json({ message: "Incorrect password" });
       }
+      const token = generateAccessToken(user._id);
       // if (password != user.password) {
       //   return res.status(400).json({ message: 'Incorrect password' });
       // }
+      console.log({token});
       return res.status(200).send(`
       <!doctype html>
       <html lang="en">
