@@ -61,7 +61,7 @@ app.post('/result', (req, res) => {
       })
     })
     .catch(function (error) {
-      console.error(error)
+      res.render(viewDir + '/not-found.ejs')
     })
 })
 
@@ -86,6 +86,7 @@ mongoose.connect(
 const authRouter = require('./auth-router')
 app.use('/auth', authRouter)
 const RegRoute = require('./auth-router')
+const { response } = require('express')
 app.use('/', RegRoute)
 const notesSchema = {
   username: String,

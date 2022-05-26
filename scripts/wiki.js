@@ -1,4 +1,5 @@
 const axios = require('axios')
+const res = require('express/lib/response')
 
 async function fetchWikiImage(searchQuery) {
   let fileName
