@@ -2,13 +2,21 @@ const User = require("./models/User");
 //const Role = require('.public/models/Role');
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken')
-const { validationResult } = require("express-validator");
+const { validationResult } = require("express-validator"); // save errors
 const {secret} = require("./config");
 
+// JWT token -> "header.payload.signature"
+        // header - algorithm and token type
+        
+        // payload -> body of the token
+        // payload could be an object literal, buffer or string representing valid JSON
+        
+        // signature -> unique verification data
 const generateAccessToken = (id) => {
-    const payload = {
+    const payload = { 
         id
     }
+    // jwt.sign(payload, secretOrPrivateKey, [options, callback])
     return jwt.sign(payload, secret)
 }
 
@@ -30,13 +38,20 @@ class authController {
       if (candidate) {
         return res.status(401).json({ message: "User already exists" });
       }
-      const hashPassword = bcrypt.hashSync(password, 7);
+      const hashPassword = bcrypt.hashSync(password, 7); //  a salt will be generated with the specified number of rounds and used(hash level)
+      // 2^rounds iterations of processing.
+      // From @garthk, on a 2GHz core you can roughly expect:
+      // rounds=8 : ~40 hashes/sec
+
+      // asd + 7 -> asd7 -> 123189ab12 -> 28174917abced09123 -> (2^7-2 times of hashing)
+
       //const userRole = await Role.findOne({ value: "USER" })
       const user = new User({
         username,
         password: hashPassword /*, roles: [userRole.value]*/,
       });
-      await user.save();
+      //await
+       user.save(); // save in Mongodb
       
       return res.status(201).send(` <!doctype html>
       <html lang="en">
@@ -157,7 +172,8 @@ class authController {
         }
     }
     async login(req, res) {
-    try {
+    try { 
+      
       const { username, password } = req.body;
       const user = await User.findOne({ username });
       if (!user) {
@@ -165,6 +181,10 @@ class authController {
           .status(400)
           .json({ message: `User ${username} does not exist` });
       }
+
+    //compareSync(data, encrypted)
+    //data - [REQUIRED] - data to compare.
+    //encrypted - [REQUIRED] - data to be compared to.
       const validPassword = bcrypt.compareSync(password, user.password);
       if (!validPassword) {
         return res.status(401).json({ message: "Incorrect password" });
