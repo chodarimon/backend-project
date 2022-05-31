@@ -6,12 +6,12 @@ const { validationResult } = require("express-validator"); // save errors
 const {secret} = require("./config");
 
 // JWT token -> "header.payload.signature"
-        // header - algorithm and token type
-        
-        // payload -> body of the token
-        // payload could be an object literal, buffer or string representing valid JSON
-        
-        // signature -> unique verification data
+// header - algorithm and token type
+
+// payload -> body of the token
+// payload could be an object literal, buffer or string representing valid JSON
+
+// signature -> unique verification data
 const generateAccessToken = (id) => {
     const payload = { 
         id
