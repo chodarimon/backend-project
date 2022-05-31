@@ -141,9 +141,7 @@ class authController {
               }
           </style>
       </head>
-      
       <body>
-      
           <div class="container">
               <header class="blog-header py-3">
                   <div class="row flex-nowrap justify-content-between align-items-center">
@@ -193,8 +191,9 @@ class authController {
       // if (password != user.password) {
       //   return res.status(400).json({ message: 'Incorrect password' });
       // }
-      console.log({token});
-      return res.status(200).send(`
+      res.cookie("key", username, {httpOnly: true,
+        secure: process.env.NODE_ENV === "production",})
+      return res.send(`
       <!doctype html>
       <html lang="en">
       
