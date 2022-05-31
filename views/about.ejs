@@ -24,14 +24,20 @@
         <div class="navbar-nav">
           <a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           <a class="nav-item nav-link active" href="/about">About Us</a>
-          <a class="nav-item nav-link" href="/auth/registration">Register</a>
-          <a class="nav-item nav-link" href="/auth/login">Login</a>
-          <a class="nav-item nav-link disabled" href="">All Users</a>
+          <!-- <a class="nav-item nav-link disabled" href="">All Users</a> -->
+          <% if (key) { %>
+            <span class="nav-item">Logged as: <%=key%></span>
+            <a class="nav-item nav-link" href="/auth/logout">Log out</a>
+          <%} else { %>
+            <a class="nav-item nav-link" href="/auth/registration">Register</a>
+            <a class="nav-item nav-link" href="/auth/login">Login</a>
+          <% } %>
         </div>
       </div>
     </nav>
     <div class="center-page">
       <h1>About Page</h1>
+      <h1>👀</h1>
     </div>
   </body>
 </html>
